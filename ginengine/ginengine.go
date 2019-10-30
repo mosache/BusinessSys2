@@ -5,22 +5,22 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	config "BusinessSys/Config"
+	"BusinessSys/config"
 )
 
 //Engine gin engine
 var Engine *gin.Engine
 
-var ginEngineOnec sync.Once
+var ginEngineOnce sync.Once
 
 //InitEngine InitEngine
 func InitEngine() {
-	ginEngineOnec.Do(func() {
-		Engine = gin.New()
+	ginEngineOnce.Do(func() {
 		if config.AppConfig.Mode == "debug" {
 			gin.SetMode(gin.DebugMode)
 		} else {
 			gin.SetMode(gin.ReleaseMode)
 		}
+		Engine = gin.New()
 	})
 }

@@ -9,8 +9,24 @@ import (
 
 //Config Config
 type Config struct {
+	Server
+
+	DataBase
+}
+
+type Server struct {
 	Port int
 	Mode string
+}
+
+type DataBase struct {
+	Addr string
+
+	Username string
+
+	Password string
+
+	DataBaseName string
 }
 
 //AppConfig 配置项
@@ -49,7 +65,13 @@ func InitConfig() {
 
 func getDefault() *Config {
 	return &Config{
-		Port: 8081,
-		Mode: "release",
+		Server{Port: 8081,
+			Mode: "debug"},
+		DataBase{
+			Addr:         "192.168.66.101:3307",
+			Username:     "root",
+			Password:     "123456",
+			DataBaseName: "",
+		},
 	}
 }
