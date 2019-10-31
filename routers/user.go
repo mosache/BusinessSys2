@@ -1,22 +1,24 @@
 package routes
 
 import (
+	"BusinessSys/service"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 func init() {
 	register("user", func(e *gin.Engine) {
 		api := e.Group("/api")
 		{
-			api.GET("/login", login)
+			api.POST("/login", login)
 		}
 	})
 }
 
 func login(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"status": 200,
-		"msg":    "success",
-	})
+
+	token := service.GetNewToken(1)
+
+	ServiceOKJson(gin.H{
+		"token": token,
+	}, c)
 }

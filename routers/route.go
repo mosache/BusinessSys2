@@ -60,6 +60,27 @@ func Setup() {
 	}
 }
 
+type YDSuccessResult int
+
+const (
+	ResultFail = iota
+	ResultSuccess
+)
+
+type YDResponse struct {
+	Success YDSuccessResult `json:"success"`
+	Msg     string          `json:"msg"`
+	Data    interface{}     `json:"data"`
+}
+
+func ServiceOKJson(data interface{}, c *gin.Context) {
+	c.JSON(http.StatusOK, YDResponse{Success: ResultSuccess, Msg: "", Data: data})
+}
+
+func ServiceFailJson(msg string, c *gin.Context) {
+	c.JSON(http.StatusOK, YDResponse{Success: ResultFail, Msg: msg})
+}
+
 func ResponseOk(data interface{}) map[string]interface{} {
 	return gin.H{
 		"status": http.StatusOK,
