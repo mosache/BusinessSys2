@@ -1,27 +1,28 @@
-package service
+package utils
 
 import (
 	"encoding/base64"
 	"fmt"
+
 	"github.com/dgrijalva/jwt-go"
 )
 
 const (
-	secretKey = "dhdiadhusnnvnvaopdpeiejpas"
+	secretKey = "dsdddddwdwdwdwddd"
 )
 
 type TokenData struct {
-	UserId int
+	UserId int64
 	jwt.StandardClaims
 }
 
-func GetNewToken(userId int) string {
-	jwtToken := jwt.NewWithClaims(jwt.SigningMethodES256, &TokenData{UserId: userId})
+func GetNewToken(userId int64) string {
+	jwtToken := jwt.NewWithClaims(jwt.SigningMethodHS256, &TokenData{UserId: userId})
 
-	result, err := jwtToken.SignedString(secretKey)
+	result, err := jwtToken.SignedString([]byte(secretKey))
 
 	if err != nil {
-		return ""
+		return err.Error()
 	}
 
 	result = base64.StdEncoding.EncodeToString([]byte(result))
@@ -34,7 +35,7 @@ func CheckToken(token string) (data interface{}, err error) {
 	bytes, err = base64.StdEncoding.DecodeString(token)
 
 	parsedToken, parseErr := jwt.ParseWithClaims(string(bytes), &TokenData{}, func(token *jwt.Token) (i interface{}, e error) {
-		if _, ok := token.Method.(*jwt.SigningMethodECDSA); !ok {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexcepted signing method:%v", token.Header["alg"])
 		}
 		return []byte(secretKey), nil

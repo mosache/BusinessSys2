@@ -9,32 +9,32 @@ import (
 
 //Config Config
 type Config struct {
-	Server
+	Server `yaml:"server"`
 
-	DataBase
+	DataBase `yaml:"database"`
 }
 
 type Server struct {
-	Port int
-	Mode string
+	Port int    `yaml:"port"`
+	Mode string `yaml:"mode"`
 }
 
 type DataBase struct {
-	Addr string
+	Addr string `yaml:"addr"`
 
-	Username string
+	Username string `yaml:"username"`
 
-	Password string
+	Password string `yaml:"password"`
 
-	DataBaseName string
+	DataBaseName string `yaml:"dataBaseName"`
 }
 
 //AppConfig 配置项
-var AppConfig *Config
+var AppConfig *Config = &Config{}
 
 //InitConfig 初始化配置
 func InitConfig() {
-	configFile, err := os.OpenFile("./appConfig.yaml", os.O_RDONLY, 0222)
+	configFile, err := os.OpenFile("./default.yaml", os.O_RDONLY, 0222)
 
 	if err != nil {
 		//配置文件读取出错或不存在,使用默认配置
@@ -71,7 +71,7 @@ func getDefault() *Config {
 			Addr:         "192.168.66.101:3307",
 			Username:     "root",
 			Password:     "123456",
-			DataBaseName: "",
+			DataBaseName: "golang_demo",
 		},
 	}
 }

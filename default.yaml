@@ -1,0 +1,9 @@
+server:
+  port: 8082
+  mode: debug
+
+database:
+  addr: 192.168.66.101:3307
+  username: root
+  password: 123456
+  dataBaseName: golang_demo

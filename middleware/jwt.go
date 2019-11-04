@@ -2,9 +2,11 @@ package middleware
 
 import (
 	routes "BusinessSys/routers"
-	"BusinessSys/service"
+	"BusinessSys/utils"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strings"
 )
 
 func init() {
@@ -14,7 +16,7 @@ func init() {
 func jwtMiddleWare() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		//Get请求和login请求不验证token
-		if c.Request.Method == http.MethodGet || c.Request.URL.String() == "/api/login" {
+		if c.Request.Method == http.MethodGet || c.Request.URL.String() == "/api/login" || strings.HasPrefix(c.Request.URL.String(), "/swagger/") {
 			c.Next()
 			return
 		}
@@ -26,18 +28,21 @@ func jwtMiddleWare() gin.HandlerFunc {
 			return
 		}
 
-		data, err := service.CheckToken(token)
+		data, err := utils.CheckToken(token)
 
 		if err != nil {
+
+			fmt.Println(err.Error())
+
 			routes.ServiceFailJson("token 解析失败", c)
 			c.Abort()
 			return
 		}
 
-		var tokenData *service.TokenData
+		var tokenData *utils.TokenData
 		var isOk bool
 
-		if tokenData, isOk = data.(*service.TokenData); !isOk {
+		if tokenData, isOk = data.(*utils.TokenData); !isOk {
 			routes.ServiceFailJson("token data 解析失败", c)
 			c.Abort()
 			return

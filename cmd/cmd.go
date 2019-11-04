@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"BusinessSys/config"
+	"BusinessSys/db"
 	"BusinessSys/ginengine"
 	"BusinessSys/middleware"
 	routes "BusinessSys/routers"
@@ -36,7 +37,7 @@ var RootCmd = cobra.Command{
 		routes.Setup()
 
 		//初始化数据库
-		// db.InitDB()
+		db.InitDB()
 
 		//gin run
 		err := ginengine.Engine.Run(fmt.Sprintf(":%d", config.AppConfig.Port))
