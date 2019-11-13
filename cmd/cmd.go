@@ -6,6 +6,7 @@ import (
 	"BusinessSys/ginengine"
 	"BusinessSys/middleware"
 	routes "BusinessSys/routers"
+	"BusinessSys/validator"
 	"fmt"
 
 	"github.com/spf13/cobra"
@@ -30,6 +31,9 @@ var RootCmd = cobra.Command{
 		//初始化GinEngine
 		ginengine.InitEngine()
 
+		//注册Validators
+		validator.InitValidators()
+
 		//初始化中间件
 		middleware.SetUp()
 
@@ -38,6 +42,8 @@ var RootCmd = cobra.Command{
 
 		//初始化数据库
 		db.InitDB()
+
+
 
 		//gin run
 		err := ginengine.Engine.Run(fmt.Sprintf(":%d", config.AppConfig.Port))

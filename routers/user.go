@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"BusinessSys/db"
+	"BusinessSys/model"
 	"BusinessSys/service"
 	"BusinessSys/utils"
 	"github.com/gin-gonic/gin"
@@ -18,12 +18,14 @@ func init() {
 
 // @Summary 登录接口
 // @Description 登录
+// @Accept  multipart/form-data
+// @Produce json
 // @Param username formData string true "用户名"
 // @Param password formData string false "密码"
 // @Router /api/login [post]
 func login(c *gin.Context) {
 	var (
-		loginInUser *db.User
+		loginInUser *model.User
 		isSuccess   bool
 	)
 	username := c.PostForm("username")
@@ -50,3 +52,5 @@ func login(c *gin.Context) {
 		"token": token,
 	}, c)
 }
+
+

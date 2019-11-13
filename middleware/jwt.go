@@ -1,7 +1,9 @@
 package middleware
 
 import (
+	"BusinessSys/model"
 	routes "BusinessSys/routers"
+	"BusinessSys/service"
 	"BusinessSys/utils"
 	"fmt"
 	"github.com/gin-gonic/gin"
@@ -48,11 +50,20 @@ func jwtMiddleWare() gin.HandlerFunc {
 			return
 		}
 
-		if tokenData.UserId != 1 {
+		//token通过验证
+		var currentUser *model.User
+		if currentUser,err = service.GetUserByID(tokenData.UserId);err!=nil {
 			routes.ServiceFailJson("token data 解析失败", c)
-			c.Abort()
-			return
 		}
+
+		c.Set("currentUser",currentUser)
+
+
+		//if tokenData.UserId != 1 {
+		//	routes.ServiceFailJson("token data 解析失败", c)
+		//	c.Abort()
+		//	return
+		//}
 		c.Next()
 	}
 }

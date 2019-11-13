@@ -3,6 +3,7 @@ package utils
 import (
 	"encoding/base64"
 	"fmt"
+	"time"
 
 	"github.com/dgrijalva/jwt-go"
 )
@@ -17,8 +18,12 @@ type TokenData struct {
 }
 
 func GetNewToken(userId int64) string {
-	jwtToken := jwt.NewWithClaims(jwt.SigningMethodHS256, &TokenData{UserId: userId})
+	//根据生成时间，使每次生成的token都不一样
+	jwtToken := jwt.NewWithClaims(jwt.SigningMethodHS256, &TokenData{UserId: userId,StandardClaims:jwt.StandardClaims{
+		IssuedAt:time.Now().Unix(),
+	}})
 
+	jwt.New(jwt.SigningMethodHS256)
 	result, err := jwtToken.SignedString([]byte(secretKey))
 
 	if err != nil {
@@ -43,7 +48,7 @@ func CheckToken(token string) (data interface{}, err error) {
 
 	if claims, ok := parsedToken.Claims.(*TokenData); ok && parsedToken.Valid {
 		data = claims
-		fmt.Printf("%v %v", claims.UserId, claims.StandardClaims.ExpiresAt)
+		//fmt.Printf("%v %v", claims.UserId, claims.StandardClaims.ExpiresAt)
 	} else {
 		fmt.Println(err.Error())
 		err = parseErr

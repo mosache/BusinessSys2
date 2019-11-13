@@ -5,9 +5,71 @@
         "license": {}
     },
     "paths": {
+        "/api/addNoticePoint": {
+            "post": {
+                "summary": "添加印象点",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "名称",
+                        "name": "name",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "类型",
+                        "name": "type",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "纬度",
+                        "name": "coordinateX",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "经度",
+                        "name": "coordinateY",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "当前印象",
+                        "name": "feel_now",
+                        "in": "formData"
+                    }
+                ]
+            }
+        },
+        "/api/addProject": {
+            "post": {
+                "description": "添加项目",
+                "summary": "新建项目",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "data",
+                        "name": "data",
+                        "in": "formData",
+                        "required": true
+                    }
+                ]
+            }
+        },
         "/api/login": {
             "post": {
                 "description": "登录",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
                 "summary": "登录接口",
                 "parameters": [
                     {
